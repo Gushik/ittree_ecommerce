@@ -1,5 +1,6 @@
 <div class="category-menu-list">
 <ul>
+    @if($categories->count())
     @foreach($categories as $category)
         <li>
             <a href="{{route('products.index', ['category_id' => $category->id])}}">{{$category->name}}<i
@@ -40,7 +41,7 @@
         </li>
 
     @endforeach
-
+    @endif
 </ul>
 </div>
 

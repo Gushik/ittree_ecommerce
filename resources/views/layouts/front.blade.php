@@ -38,6 +38,12 @@
 </head>
 <body>
 <header>
+    <!-- Login&Register Modal -->
+    @extends('layouts.loginmodal')
+
+    @extends('layouts.registermodal')
+    <!-- Login&Register -->
+
     <!-- TOP HEADER -->
     <div id="top-header">
         <div class="container">
@@ -47,24 +53,62 @@
                 <li><a href="#"><i class="fa fa-map-marker"></i> Луцьк</a></li>
             </ul>
             <ul class="header-links pull-right">
-                <li><a href="#"><i class="fa fa-dollar"></i> USD</a></li>
                 <li><a href="#"><i class="fa fa-user-o"></i> Мій кабінет</a></li>
-                @auth
-                    <li>
-                        <form action=" {{ url('/logout') }} " method="POST">
-                            @csrf
-                            <input type="submit" value="Вийти"/>
-                        </form>
-                    </li>
-                @else
+                        @guest
+                            @if (Route::has('login'))
+                                <li class="nav-item">
+                                    <a class="animate-right" href="#" data-target="#LoginModal" data-toggle="modal" title="Login">
+                                        <p>Вхід</p>
+                                    </a>
+                                </li>
+                            @endif
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="animate-right" href="#" data-target="#RegisterModal" data-toggle="modal" title="Login">
+                                        <p>Реєстрація</p>
+                                    </a>
+                                </li>
+                            @endif
+                        @else
+                            <li><a href="#"><i class="pe-7s-users"></i>{{ Auth::user()->name }}</a></li>
 
-                    <li>
-                        <a href="{{url('/login')}}">Логін</a>
-                    </li>
-                    <li>
-                        <a href="{{url('/register')}}">Зареєструватися</a>
-                    </li>
-                @endauth
+                            <a href="{{ route('logout') }}"
+                               onclick="event.preventDefault();
+                                                         document.getElementById('logout-form').submit();">
+                                {{ __('| Вийти') }}
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+
+
+                            @if (Auth::user()->role_id == 1)
+                                <li class="nav-item">
+                                    <a class="dropdown-item" href="{{ route('voyager.dashboard') }}">
+                                        {{ __('Адмін панель') }}
+                                    </a>
+                                </li>
+                            @endif
+                            @if (Auth::user()->role_id == 2)
+                                <li class="nav-item">
+                                    <a class="dropdown-item" href="{{ route('shops.create') }}">
+                                        Зареєструвати магазин
+                                    </a>
+                                </li>
+                            @endif
+                            @if (Auth::user()->role_id == 3)
+                                <li class="nav-item">
+                                    <a class="dropdown-item" href="{{ route('voyager.dashboard') }}">
+                                        Перейти до магазину
+                                    </a>
+                                </li>
+                            @endif
+
+
+                        @endguest
+                        <li><a href="#"><i class="pe-7s-flag"></i>UA</a></li>
+                        <li><a class="border-none" href="#"><span>₴</span>UAH</a></li>
             </ul>
         </div>
     </div>
@@ -89,6 +133,7 @@
                 <!-- SEARCH BAR -->
                 <div class="col-md-6">
                     <div class="header-search">
+                        @if($categories != null)
                         <form action="{{route('products.search')}}" method="GET">
                             <select class="input-select">
 
@@ -116,6 +161,10 @@
                             <input class="input" placeholder="Я шукаю...">
                             <button class="search-btn">Пошук</button>
                         </form>
+                        @else
+                            <p>ERROR</p>
+                        @endif
+
                     </div>
                 </div>
                 <!-- /SEARCH BAR -->
@@ -211,7 +260,6 @@
                     <div class="popup-black">
                         <div class="popup">
                             @include('_category-penal-list')
-
                              </div>
                     </div></li>
 
