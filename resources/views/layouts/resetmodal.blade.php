@@ -1,22 +1,21 @@
-<div class="modal fade" id="EmailModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span class="pe-7s-close" aria-hidden="true"></span>
-    </button>
-    <div class="modal-dialog modal-quickview-width" role="document">
-        <div class="modal-content">
-            <div class="modal-body-left">
-                <div class="qwick-view">
-                    <div class="email">
-                        <div class="card-header">{{ __('Відновити пароль') }}</div>
-
-                        <div class="card-body">
-                            @if (session('status'))
+<div class="modal fade" id="EmailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Відновлення паролю') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="pe-7s-close" aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="card-body">
+                    @if (session('status'))
                                 <div class="alert alert-success" role="alert">
                                     {{ session('status') }}
                                 </div>
                             @endif
-
-                            <form method="POST" action="{{ route('password.email') }}">
+                        <form method="POST" action="{{ route('password.email') }}">
+                        <div class="modal-body">
                                 @csrf
 
                                 <div class="row mb-3">
@@ -32,19 +31,14 @@
                                         @enderror
                                     </div>
                                 </div>
-
-                                <div class="row mb-0">
-                                    <div class="col-md-6 offset-md-4">
-                                        <button type="submit" class="btn btn-primary">
-                                            {{ __('Відправити посилання') }}
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
                         </div>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="default-btn floatright">
+                                                {{ __('Відправити посилання') }}
+                            </button>
+                        </div>
+                        </form>
                 </div>
             </div>
         </div>
-    </div>
 </div>
